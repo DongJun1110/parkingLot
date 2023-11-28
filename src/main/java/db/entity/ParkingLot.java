@@ -31,8 +31,4 @@ public class ParkingLot {
     @Column(nullable = false)
     private String company;
 
-    @OneToMany(mappedBy = "parkingLot")
-    @Cascade(CascadeType.ALL)
-    private List<ParkingSpace> space;
-
 }
