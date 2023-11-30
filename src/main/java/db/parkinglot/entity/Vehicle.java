@@ -1,4 +1,4 @@
-package db.entity;
+package db.parkinglot.entity;
 
 
 import jakarta.persistence.*;
