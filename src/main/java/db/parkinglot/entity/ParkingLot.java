@@ -1,16 +1,14 @@
-package db.entity;
+package db.parkinglot.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ParkingLot {
 
     @Id
@@ -27,13 +25,15 @@ public class ParkingLot {
     private String location;
 
     @Column(nullable = false)
-    private String totalSpace;
+    private int totalSpace;
 
     @Column(nullable = false)
     private String startTime;
 
     @Column(nullable = false)
     private String endTime;
+
+    private String fee;
 
     private int feePerHour;
 
