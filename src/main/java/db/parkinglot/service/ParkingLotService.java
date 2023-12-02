@@ -1,41 +1,59 @@
 package db.parkinglot.service;
 
 import db.parkinglot.dto.ParkingLotRequestDto;
+import db.parkinglot.dto.ParkingLotResponseDto;
 import db.parkinglot.entity.ParkingLot;
 import db.parkinglot.repository.ParkingLotRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ParkingLotService {
 
-    private ParkingLotRepository parkingLotRepository;
+    private final ParkingLotRepository parkingLotRepository;
 
     //주차장 등록하기
+    @Transactional
     public ParkingLot registerParkingLot(ParkingLotRequestDto pld) {
 
-        ParkingLot pl = ParkingLot.builder()
-                .fee(pld.getName())
-                .feePerHour(pld.getFeePerHour())
-                .dayFee(pld.getDayFee())
-                .name(pld.getName())
-                .location(pld.getLocation())
-                .monthFee(pld.getMonthFee())
-                .sort(pld.getSort())
-                .contactNumber(pld.getContactNumber())
-                .startTime(pld.getStartTime())
-                .endTime(pld.getEndTime())
-                .totalSpace(pld.getTotalSpace())
-                .company(pld.getCompany())
-                .significant(pld.getSignificant()).build();
+        if (pld != null) {
+            ParkingLot pl = ParkingLot.builder()
+                    .fee(pld.getFee())
+                    .feePerHour(pld.getFeePerHour())
+                    .dayFee(pld.getDayFee())
+                    .name(pld.getName())
+                    .location(pld.getLocation())
+                    .monthFee(pld.getMonthFee())
+                    .sort(pld.getSort())
+                    .contactNumber(pld.getContactNumber())
+                    .startTime(pld.getStartTime())
+                    .endTime(pld.getEndTime())
+                    .totalSpace(pld.getTotalSpace())
+                    .leftSpace(pld.getTotalSpace())
+                    .company(pld.getCompany())
+                    .significant(pld.getSignificant())
+                    .build();
 
-        ParkingLot savedParkingLot = parkingLotRepository.save(pl);
-        return savedParkingLot;
+            return parkingLotRepository.save(pl);
+        }
+        return null;
+    }
 
+    @Transactional
+    public List<ParkingLotResponseDto> getParkingLotLists() {
+
+        List<ParkingLot> foundParkingLots = parkingLotRepository.findAll();
+        List<ParkingLotResponseDto> plDto = new ArrayList<>();
+
+        for (ParkingLot pl : foundParkingLots) {
+            plDto.add(ParkingLotResponseDto.toDto(pl));
+        }
+        return plDto;
     }
 
 }
