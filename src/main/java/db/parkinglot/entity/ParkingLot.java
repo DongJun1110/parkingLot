@@ -2,6 +2,8 @@ package db.parkinglot.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 @Entity
 @Getter
@@ -9,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@DynamicInsert
 public class ParkingLot {
 
     @Id
@@ -27,10 +30,10 @@ public class ParkingLot {
     @Column(nullable = false)
     private int totalSpace;
 
-    @Column(nullable = false)
+    private int leftSpace;
+
     private String startTime;
 
-    @Column(nullable = false)
     private String endTime;
 
     private String fee;
@@ -43,7 +46,6 @@ public class ParkingLot {
 
     private String significant;
 
-    @Column(nullable = false)
     private String company;
 
     private String contactNumber;
