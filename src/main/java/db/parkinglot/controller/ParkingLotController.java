@@ -4,11 +4,13 @@ import db.parkinglot.dto.ParkingLotResponseDto;
 import db.parkinglot.entity.ParkingLot;
 import db.parkinglot.service.ParkingLotService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/parkingLots")
 public class ParkingLotController {
@@ -16,11 +18,15 @@ public class ParkingLotController {
     private final ParkingLotService parkingLotService;
 
     @GetMapping("/lists")
-    public List<ParkingLotResponseDto> lists() {
-        return parkingLotService.getParkingLotLists();
+    public String lists(Model model) {
+
+        List<ParkingLotResponseDto> parkingLots = parkingLotService.getParkingLotLists();
+        model.addAttribute("parkingLots",parkingLots);
+        return "parkinglot/parkinglotList";
     }
 
     @GetMapping("/{parkingLotId}")
+    @ResponseBody
     public ParkingLot detail(@PathVariable Long parkingLotId) {
         return parkingLotService.getParkingLot(parkingLotId);
     }
