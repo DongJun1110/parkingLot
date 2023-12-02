@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Centered 2x2 Grid Buttons</title>
+    <style>
+        /* CSS 코드 */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 35px;
+            justify-content: center;
+        }
+
+        .grid-container a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 270px;
+            height: 150px;
+            font-size: 1.2em;
+            text-decoration: none;
+            border: 3px solid #7e7e7e;
+            border-radius: 5px;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="grid-container">
+    <a href="/parkingList">주차장 찾기</a>
+    <a href="/parkingRegister">주차장 등록하기</a>
+    <a href="/myPage">마이페이지</a>
+    <a href="ggg">Button 4</a>
+</div>
+
+</body>
+</html>
