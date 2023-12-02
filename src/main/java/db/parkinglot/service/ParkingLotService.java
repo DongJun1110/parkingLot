@@ -66,4 +66,17 @@ public class ParkingLotService {
         return parkingLot;
     }
 
+    @Transactional
+    public List<ParkingLotResponseDto> searchParkingLots(String keyword) {
+        List<ParkingLot> foundParkingLot =
+                parkingLotRepository.findParkingLotByNameContainingLAndLocationContaining(keyword);
+        List<ParkingLotResponseDto> result = new ArrayList<>();
+
+        for (ParkingLot pl : foundParkingLot) {
+            result.add(ParkingLotResponseDto.toDto(pl));
+        }
+
+        return result;
+    }
+
 }
