@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +55,15 @@ public class ParkingLotService {
             plDto.add(ParkingLotResponseDto.toDto(pl));
         }
         return plDto;
+    }
+
+    @Transactional
+    public ParkingLot getParkingLot(Long parkingLotId) {
+
+        Optional<ParkingLot> foundParkingLot = parkingLotRepository.findById(parkingLotId);
+        ParkingLot parkingLot = foundParkingLot.get();
+
+        return parkingLot;
     }
 
 }
