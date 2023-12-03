@@ -21,7 +21,7 @@ public class ParkingLotController {
     public String lists(Model model) {
 
         List<ParkingLotResponseDto> parkingLots = parkingLotService.getParkingLotLists();
-        model.addAttribute("parkingLots",parkingLots);
+        model.addAttribute("parkingLots", parkingLots);
         return "parkinglot/parkinglotList";
     }
 
@@ -31,4 +31,10 @@ public class ParkingLotController {
         return parkingLotService.getParkingLot(parkingLotId);
     }
 
+    @GetMapping("/search")
+    public String searchParkingLots(@RequestParam String keyword, Model model) {
+        List<ParkingLotResponseDto> parkingLots = parkingLotService.searchParkingLots(keyword);
+        model.addAttribute("parkingLots", parkingLots);
+        return "parkinglot/searchedList";
+    }
 }
