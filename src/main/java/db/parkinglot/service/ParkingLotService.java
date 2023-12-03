@@ -68,11 +68,19 @@ public class ParkingLotService {
 
     @Transactional
     public List<ParkingLotResponseDto> searchParkingLots(String keyword) {
-        List<ParkingLot> foundParkingLot =
-                parkingLotRepository.findParkingLotByNameContainingLAndLocationContaining(keyword);
+        List<ParkingLot> plByName =
+                parkingLotRepository.findParkingLotByNameContaining(keyword);
+
+        List<ParkingLot> plByLocation =
+                parkingLotRepository.findParkingLotByLocationContaining(keyword);
+
         List<ParkingLotResponseDto> result = new ArrayList<>();
 
-        for (ParkingLot pl : foundParkingLot) {
+        for (ParkingLot pl : plByName) {
+            result.add(ParkingLotResponseDto.toDto(pl));
+        }
+
+        for (ParkingLot pl : plByLocation) {
             result.add(ParkingLotResponseDto.toDto(pl));
         }
 
