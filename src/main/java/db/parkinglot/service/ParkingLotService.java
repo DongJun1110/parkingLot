@@ -2,8 +2,12 @@ package db.parkinglot.service;
 
 import db.parkinglot.dto.ParkingLotRequestDto;
 import db.parkinglot.dto.ParkingLotResponseDto;
+import db.parkinglot.dto.UserInfoDto;
+import db.parkinglot.entity.Member;
 import db.parkinglot.entity.ParkingLot;
+import db.parkinglot.repository.MemberRepository;
 import db.parkinglot.repository.ParkingLotRepository;
+import db.parkinglot.security.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +21,7 @@ import java.util.Optional;
 public class ParkingLotService {
 
     private final ParkingLotRepository parkingLotRepository;
+    private final MemberRepository memberRepository;
 
     //주차장 등록하기
     @Transactional
@@ -58,15 +63,6 @@ public class ParkingLotService {
     }
 
     @Transactional
-    public ParkingLot getParkingLot(Long parkingLotId) {
-
-        Optional<ParkingLot> foundParkingLot = parkingLotRepository.findById(parkingLotId);
-        ParkingLot parkingLot = foundParkingLot.get();
-
-        return parkingLot;
-    }
-
-    @Transactional
     public List<ParkingLotResponseDto> searchParkingLots(String keyword) {
         List<ParkingLot> plByName =
                 parkingLotRepository.findParkingLotByNameContaining(keyword);
@@ -85,6 +81,51 @@ public class ParkingLotService {
         }
 
         return result;
+    }
+
+    @Transactional
+    public ParkingLot getDetail(Long parkingLotId) {
+        Optional<ParkingLot> parkingLot = parkingLotRepository.findById(parkingLotId);
+        ParkingLot foundParkingLot = parkingLot.get();
+        if (foundParkingLot != null) {
+            return foundParkingLot;
+        }
+        return null;
+    }
+
+    @Transactional
+    public Integer getAvailableSpace(Long ParkingLotId) {
+        Optional<ParkingLot> foundParkingLot = parkingLotRepository.findById(ParkingLotId);
+
+        if(foundParkingLot.isPresent()){
+            ParkingLot parkingLot = foundParkingLot.get();
+
+            return parkingLot.getLeftSpace();
+        }
+        return null;
+    }
+
+    @Transactional
+    public ParkingLot reserveParkingLot(Long parkingLotId) {
+
+        Optional<ParkingLot> foundParkingLot = parkingLotRepository.findById(parkingLotId);
+        if(foundParkingLot.isPresent()){
+            ParkingLot parkingLot = foundParkingLot.get();
+            UserInfoDto currentMemberId = SecurityUtil.getCurrentMemberId();
+            Optional<Member> foundMember = memberRepository.findByUserId(currentMemberId.getUserId());
+
+            if(foundMember.isPresent()){
+                Member member = foundMember.get();
+                member.getReservedParkingLot().add(parkingLot);
+                memberRepository.save(member);
+
+                parkingLot.setLeftSpace(parkingLot.getLeftSpace()-1);
+                parkingLotRepository.save(parkingLot);
+
+                return parkingLot;
+            }
+        }
+        return null;
     }
 
 }
