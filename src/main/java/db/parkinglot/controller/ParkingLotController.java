@@ -1,5 +1,6 @@
 package db.parkinglot.controller;
 
+import db.parkinglot.dto.ParkingLotReservationResponseDto;
 import db.parkinglot.dto.ParkingLotResponseDto;
 import db.parkinglot.entity.ParkingLot;
 import db.parkinglot.service.ParkingLotService;
@@ -61,5 +62,13 @@ public class ParkingLotController {
         }
         return "ok";
     }
+
+
+//    @ResponseBody
+//    @GetMapping("/reservationList/{userId}")
+//    public List<ParkingLotReservationResponseDto> showParkingLotReservationList(@PathVariable Long userId) {
+//
+//    }
+
 
 }
