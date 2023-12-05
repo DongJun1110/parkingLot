@@ -2,6 +2,8 @@ package db.parkinglot.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -11,7 +13,6 @@ import org.hibernate.annotations.DynamicInsert;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@DynamicInsert
 public class ParkingLot {
 
     @Id
@@ -29,6 +30,11 @@ public class ParkingLot {
 
     @Column(nullable = false)
     private int totalSpace;
+
+    @ManyToOne(targetEntity = Member.class)
+    @Cascade(CascadeType.ALL)
+    @JoinColumn(name = "memberId")
+    private Member member;
 
     private int leftSpace;
 
