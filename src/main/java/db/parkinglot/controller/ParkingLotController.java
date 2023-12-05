@@ -4,6 +4,8 @@ import db.parkinglot.dto.ParkingLotResponseDto;
 import db.parkinglot.entity.ParkingLot;
 import db.parkinglot.service.ParkingLotService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +28,10 @@ public class ParkingLotController {
     }
 
     @GetMapping("/{parkingLotId}")
-    @ResponseBody
-    public ParkingLot detail(@PathVariable Long parkingLotId) {
-        return parkingLotService.getParkingLot(parkingLotId);
+    public String detail(Model model, @PathVariable Long parkingLotId) {
+        ParkingLot parkingLot = parkingLotService.getDetail(parkingLotId);
+        model.addAttribute("detailParkingLot", parkingLot);
+        return "parkinglot/detail";
     }
 
     @GetMapping("/search")
@@ -37,4 +40,26 @@ public class ParkingLotController {
         model.addAttribute("parkingLots", parkingLots);
         return "parkinglot/searchedList";
     }
+
+    @GetMapping("/{parkingLotId}/reservation")
+    public String reservationForm(@PathVariable Long parkingLotId) {
+        Integer availableSpace = parkingLotService.getAvailableSpace(parkingLotId);
+        if (availableSpace == null) {
+            return null;
+        }
+
+        return "reservation/reservationForm";
+    }
+
+    @PostMapping("/{parkingLotId}/reservation")
+    @ResponseBody
+    public String reservation(@PathVariable Long parkingLotId) {
+
+        ParkingLot parkingLot = parkingLotService.reserveParkingLot(parkingLotId);
+        if (parkingLot == null) {
+            return "bad";
+        }
+        return "ok";
+    }
+
 }
