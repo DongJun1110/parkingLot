@@ -20,6 +20,11 @@ public class MainController {
 
     private final MemberRepository memberRepository;
 
+    @GetMapping("/main")
+    public String mainPage() {
+        return "main/index";
+    }
+
     @GetMapping("/parkingList")
     @ResponseBody
     public String parkingList() {
