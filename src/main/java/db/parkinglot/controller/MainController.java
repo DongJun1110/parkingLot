@@ -32,6 +32,11 @@ public class MainController {
         Optional<Member> byUserId = memberRepository.findByUserId(userId);
         log.info("유저 아이디" + userId);
 
+
+        if(!byUserId.isPresent()){
+            return "auth/login";
+        }
+
         return "register/register";
     }
 
@@ -43,7 +48,6 @@ public class MainController {
         if(currentMemberId == null){
             return "auth/login";
         }
-
         return "마이페이지";
     }
 
