@@ -1,17 +1,11 @@
 package db.parkinglot.entity;
 
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -54,6 +48,10 @@ public class Member implements UserDetails {
 
     @OneToMany(mappedBy = "member", cascade = jakarta.persistence.CascadeType.ALL)
     private List<ParkingLot> parkingLot = new ArrayList<>();
+
+    @OneToMany
+    @JoinColumn(name = "chauffeurId")
+    private List<Chauffeur> chauffeurs = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
