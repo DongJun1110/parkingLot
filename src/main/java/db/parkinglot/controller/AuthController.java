@@ -39,13 +39,13 @@ public class AuthController {
 
     @PostMapping("/join")
     @ResponseBody
-    public Member join(@RequestBody UserJoinDto userJoinDto) {
+    public HttpStatus join(@RequestBody UserJoinDto userJoinDto) {
 
         Member joinMember = authService.join(userJoinDto);
         if (joinMember == null) {
-            return null;
+            return HttpStatus.BAD_GATEWAY;
         }
-        return joinMember;
+        return HttpStatus.OK;
     }
 
 }
