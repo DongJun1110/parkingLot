@@ -50,7 +50,6 @@ public class ParkingLotController {
         if (availableSpace == null) {
             return null;
         }
-
         return "reservation/reservationForm";
     }
 
@@ -69,7 +68,6 @@ public class ParkingLotController {
     @GetMapping("/reservationList")
     public List<ParkingLotReservationResponseDto> showParkingLotReservationList() {
         List<ParkingLotReservationResponseDto> result = parkingLotService.showReservationList();
-
         return result;
     }
 
