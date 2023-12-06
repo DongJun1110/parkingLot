@@ -1,5 +1,6 @@
 package db.parkinglot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
@@ -31,9 +32,8 @@ public class ParkingLot {
     @Column(nullable = false)
     private int totalSpace;
 
-    @ManyToOne(targetEntity = Member.class)
-    @Cascade(CascadeType.ALL)
-    @JoinColumn(name = "memberId")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = jakarta.persistence.CascadeType.ALL, targetEntity = Member.class)
+    @JoinColumn(name = "member_Id")
     private Member member;
 
     private int leftSpace;
