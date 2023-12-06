@@ -6,6 +6,7 @@ import db.parkinglot.entity.Member;
 import db.parkinglot.security.TokenInfo;
 import db.parkinglot.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +29,12 @@ public class AuthController {
 
     @PostMapping("/login")
     @ResponseBody
-    public TokenInfo login(@RequestBody UserLoginDto userLoginDto) {
-        return authService.login(userLoginDto);
+    public HttpStatus login(@RequestBody UserLoginDto userLoginDto) {
+        TokenInfo info = authService.login(userLoginDto);
+        if (info == null) {
+            return HttpStatus.BAD_GATEWAY;
+        }
+        return HttpStatus.OK;
     }
 
     @PostMapping("/join")
