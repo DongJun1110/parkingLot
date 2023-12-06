@@ -1,6 +1,7 @@
 package db.parkinglot.service;
 
 import db.parkinglot.dto.ParkingLotRequestDto;
+import db.parkinglot.dto.ParkingLotReservationResponseDto;
 import db.parkinglot.dto.ParkingLotResponseDto;
 import db.parkinglot.dto.UserInfoDto;
 import db.parkinglot.entity.Member;
@@ -10,6 +11,7 @@ import db.parkinglot.repository.ParkingLotRepository;
 import db.parkinglot.security.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ParkingLotService {
 
     private final ParkingLotRepository parkingLotRepository;
@@ -109,14 +112,20 @@ public class ParkingLotService {
     public ParkingLot reserveParkingLot(Long parkingLotId) {
 
         Optional<ParkingLot> foundParkingLot = parkingLotRepository.findById(parkingLotId);
+        List<ParkingLot> result = new ArrayList<>();
+
         if(foundParkingLot.isPresent()){
             ParkingLot parkingLot = foundParkingLot.get();
             UserInfoDto currentMemberId = SecurityUtil.getCurrentMemberId();
             Optional<Member> foundMember = memberRepository.findByUserId(currentMemberId.getUserId());
+            result.add(parkingLot);
+
 
             if(foundMember.isPresent()){
                 Member member = foundMember.get();
-                member.getReservedParkingLot().add(parkingLot);
+                parkingLot.setMember(member);
+
+                member.getParkingLot().add(parkingLot);
                 memberRepository.save(member);
 
                 parkingLot.setLeftSpace(parkingLot.getLeftSpace()-1);
@@ -128,4 +137,33 @@ public class ParkingLotService {
         return null;
     }
 
+    @Transactional
+    public List<ParkingLotReservationResponseDto> showReservationList() {
+
+        String userId = SecurityUtil.getCurrentMemberId().getUserId();
+        Optional<Member> foundMember = memberRepository.findByUserId(userId);
+        List<ParkingLotReservationResponseDto> result = new ArrayList<>();
+
+        if(foundMember.isPresent()){
+            Member member = foundMember.get();
+            List<ParkingLot> parkingLots = member.getParkingLot();
+            log.info("현재 사용자"+ member.getUsername());
+
+
+            for (ParkingLot pl : parkingLots) {
+                ParkingLotReservationResponseDto dto = ParkingLotReservationResponseDto.builder()
+                        .name(pl.getName())
+                        .sort(pl.getSort())
+                        .location(pl.getLocation())
+                        .company(pl.getCompany())
+                        .fee(pl.getFee())
+                        .build();
+                result.add(dto);
+            }
+
+            log.info("예약목록"+result);
+            return result;
+        }
+        return null;
+    }
 }
