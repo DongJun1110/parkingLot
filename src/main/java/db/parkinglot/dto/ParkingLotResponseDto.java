@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 public class ParkingLotResponseDto {
 
+    private Long id;
     private String name;
     private String location;
     private int totalSpace;
@@ -22,6 +23,7 @@ public class ParkingLotResponseDto {
 
     public static ParkingLotResponseDto toDto(ParkingLot parkingLot) {
         return ParkingLotResponseDto.builder()
+                .id(parkingLot.getId())
                 .name(parkingLot.getName())
                 .location(parkingLot.getLocation())
                 .totalSpace(parkingLot.getTotalSpace())
