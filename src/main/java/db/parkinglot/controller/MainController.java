@@ -18,33 +18,24 @@ import java.util.Optional;
 @Slf4j
 public class MainController {
 
-    private final MemberRepository memberRepository;
-
     @GetMapping("/main")
     public String mainPage() {
         return "main/index";
     }
 
     @GetMapping("/parkingList")
-    @ResponseBody
     public String parkingList() {
         return "parkingList";
     }
 
     @GetMapping("/parkingRegister")
     public String parkingRegister() {
-        String userId = SecurityUtil.getCurrentMemberId().getUserId();
-
-        Optional<Member> byUserId = memberRepository.findByUserId(userId);
-        log.info("유저 아이디" + userId);
-
         return "register/register";
     }
 
-    @ResponseBody
     @GetMapping("/myPage")
     public String my() {
-        return "마이페이지";
+        return "my/myPage";
     }
 
 }
