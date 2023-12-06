@@ -5,7 +5,6 @@ import db.parkinglot.dto.UserJoinDto;
 import db.parkinglot.dto.UserLoginDto;
 import db.parkinglot.entity.Member;
 import db.parkinglot.entity.Role;
-import db.parkinglot.entity.Vehicle;
 import db.parkinglot.repository.MemberRepository;
 import db.parkinglot.security.JwtTokenProvider;
 import db.parkinglot.security.SecurityUtil;
@@ -20,9 +19,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Service
