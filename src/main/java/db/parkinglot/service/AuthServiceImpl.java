@@ -19,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -70,8 +72,6 @@ public class AuthServiceImpl implements AuthService, UserDetailsService {
                 .username(userJoinDto.getUserName())
                 .email(userJoinDto.getEmail())
                 .phoneNumber(userJoinDto.getPhoneNumber())
-                .vehicle(null)
-                .reservedParkingLot(null)
                 .createAt(new Date())
                 .build();
 
