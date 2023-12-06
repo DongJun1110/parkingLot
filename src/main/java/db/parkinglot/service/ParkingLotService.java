@@ -149,7 +149,6 @@ public class ParkingLotService {
             List<ParkingLot> parkingLots = member.getParkingLot();
             log.info("현재 사용자"+ member.getUsername());
 
-
             for (ParkingLot pl : parkingLots) {
                 ParkingLotReservationResponseDto dto = ParkingLotReservationResponseDto.builder()
                         .name(pl.getName())
