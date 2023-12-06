@@ -5,6 +5,7 @@ import db.parkinglot.dto.ParkingLotResponseDto;
 import db.parkinglot.entity.ParkingLot;
 import db.parkinglot.service.ParkingLotService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/parkingLots")
+@Slf4j
 public class ParkingLotController {
 
     private final ParkingLotService parkingLotService;
@@ -63,12 +65,12 @@ public class ParkingLotController {
         return "ok";
     }
 
+    @ResponseBody
+    @GetMapping("/reservationList")
+    public List<ParkingLotReservationResponseDto> showParkingLotReservationList() {
+        List<ParkingLotReservationResponseDto> result = parkingLotService.showReservationList();
 
-//    @ResponseBody
-//    @GetMapping("/reservationList/{userId}")
-//    public List<ParkingLotReservationResponseDto> showParkingLotReservationList(@PathVariable Long userId) {
-//
-//    }
-
+        return result;
+    }
 
 }
