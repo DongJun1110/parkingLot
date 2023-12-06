@@ -11,6 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -45,16 +46,14 @@ public class Member implements UserDetails {
     @Column(nullable = false)
     private Date createAt;
 
-    @OneToMany(mappedBy = "member")
-    @Cascade(CascadeType.ALL)
-    private List<Vehicle> vehicle;
+    @OneToMany(mappedBy = "member", cascade = jakarta.persistence.CascadeType.ALL)
+    private List<Vehicle> vehicle = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "member")
-    @Cascade(CascadeType.ALL)
-    private List<ParkingLot> reservedParkingLot;
+    @OneToMany(mappedBy = "member", cascade = jakarta.persistence.CascadeType.ALL)
+    private List<ParkingLot> parkingLot = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
