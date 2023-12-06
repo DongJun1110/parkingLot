@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Optional;
@@ -32,22 +33,12 @@ public class MainController {
         Optional<Member> byUserId = memberRepository.findByUserId(userId);
         log.info("유저 아이디" + userId);
 
-
-        if(!byUserId.isPresent()){
-            return "auth/login";
-        }
-
         return "register/register";
     }
 
     @ResponseBody
     @GetMapping("/myPage")
     public String my() {
-
-        UserInfoDto currentMemberId = SecurityUtil.getCurrentMemberId();
-        if(currentMemberId == null){
-            return "auth/login";
-        }
         return "마이페이지";
     }
 
