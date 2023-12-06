@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .signup-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 300px;
+            text-align: center;
+        }
+        .signup-container h2 {
+            margin-bottom: 20px;
+        }
+        .signup-container input[type="text"],
+        .signup-container input[type="password"],
+        .signup-container input[type="email"],
+        .signup-container input[type="tel"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .signup-container input[type="submit"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .signup-container p {
+            margin-top: 15px;
+        }
+        .signup-container a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<div class="signup-container">
+    <h2>회원가입</h2>
+    <form id="joinForm" action="/auth/join" method="post">
+        <input type="text" name="userId" placeholder="아이디" required>
+        <input type="text" name="userName" placeholder="이름" required>
+        <input type="password" name="password" placeholder="비밀번호" required>
+        <input type="email" name="email" placeholder="이메일" required>
+        <input type="tel" name="phoneNumber" placeholder="전화번호" required>
+        <input type="submit" value="가입하기">
+    </form>
+    <p id="errorMessage" style="color: red; display: none;"></p>
+    <p>이미 계정이 있으신가요? <a href="/auth/loginForm">로그인</a></p>
+
+    <script>
+        document.getElementById("joinForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            fetch('/auth/join', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: document.getElementsByName("userId")[0].value,
+                    userName: document.getElementsByName("userName")[0].value,
+                    password: document.getElementsByName("password")[0].value,
+                    email: document.getElementsByName("email")[0].value,
+                    phoneNumber: document.getElementsByName("phoneNumber")[0].value
+                })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = "/auth/loginForm";
+                    } else if (response.status === 502) {
+                        document.getElementById("errorMessage").style.display = "block";
+                        document.getElementById("errorMessage").innerText = "이미 존재하는 아이디입니다";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</div>
+</body>
+</html>
