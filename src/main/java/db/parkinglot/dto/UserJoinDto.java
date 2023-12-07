@@ -1,7 +1,5 @@
 package db.parkinglot.dto;
 
-
-import db.parkinglot.entity.Role;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

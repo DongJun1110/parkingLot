@@ -1,7 +1,6 @@
 package db.parkinglot.dto;
 
 import lombok.*;
-
 @Data
 @Getter
 @Setter
