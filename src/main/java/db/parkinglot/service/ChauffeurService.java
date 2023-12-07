@@ -9,9 +9,12 @@ import db.parkinglot.entity.ParkingLot;
 import db.parkinglot.entity.reservation.ChauffeurReservation;
 import db.parkinglot.repository.ChauffeurRepository;
 import db.parkinglot.repository.MemberRepository;
+import db.parkinglot.repository.ReservationChauffeurRepository;
 import db.parkinglot.security.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.flyway.FlywayDataSource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,10 +23,12 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChauffeurService {
 
     private final ChauffeurRepository chauffeurRepository;
     private final MemberRepository memberRepository;
+    private final ReservationChauffeurRepository reservationChauffeurRepository;
 
     @Transactional
     public List<Chauffeur> showChauffeurList() {
@@ -45,21 +50,21 @@ public class ChauffeurService {
             Member member = foundMember.get();
             Chauffeur chauffeur = foundChauffeur.get();
 
-            ChauffeurReservation chauffeurReservation = ChauffeurReservation.builder()
-                    .chauffeur(chauffeur)
-                    .member(member)
-                    .carNumber(dto.getCarNumber())
-                    .date(dto.getDate())
-                    .pickupTime(dto.getPickupTime())
-                    .pickupLocation(dto.getPickupLocation())
-                    .destination(dto.getDestination())
-                    .build();
+            ChauffeurReservation cr = new ChauffeurReservation();
+                    cr.setChauffeur(chauffeur);
+                    cr.setMember(member);
+                    cr.setCarNumber(dto.getCarNumber());
+                    cr.setDate(dto.getDate());
+                    cr.setPickupTime(dto.getPickupTime());
+                    cr.setPickupLocation(dto.getPickupLocation());
+                    cr.setDestination(dto.getDestination());
 
-            return chauffeurReservation;
+                    log.info("넘어온 dto= " + dto.getCarNumber() + dto.getDate());
+
+            return reservationChauffeurRepository.save(cr);
         }
         return null;
     }
-
 
     @Transactional
     public List<Chauffeur> showReservationList() {
@@ -73,7 +78,6 @@ public class ChauffeurService {
         }
         return null;
     }
-
 
     // 대리기사 등록하기
     @Transactional
@@ -101,7 +105,5 @@ public class ChauffeurService {
 
         return result;
     }
-
-
 
 }
