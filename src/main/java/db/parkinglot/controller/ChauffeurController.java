@@ -1,11 +1,9 @@
 package db.parkinglot.controller;
 
 import db.parkinglot.dto.ChauffeurRegisterRequestDto;
-import db.parkinglot.dto.ParkingLotResponseDto;
 import db.parkinglot.dto.reserveDto.ChauffeurReservationRequestDto;
 import db.parkinglot.entity.Chauffeur;
 import db.parkinglot.entity.reservation.ChauffeurReservation;
-import db.parkinglot.repository.ChauffeurRepository;
 import db.parkinglot.service.ChauffeurService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +27,6 @@ public class ChauffeurController {
     public String getReservationForm() {
         return "chauffeur/reservationForm";
     }
-
 
     //대리기사 목록
     @GetMapping("/lists")
@@ -55,7 +52,7 @@ public class ChauffeurController {
     //대리기사 예약 목록
     @GetMapping("/reservationList")
     @ResponseBody
-    public List<Chauffeur> showReservationList() {
+    public List<ChauffeurReservation> showReservationList() {
         return chauffeurService.showReservationList();
     }
 
