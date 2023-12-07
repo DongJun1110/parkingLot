@@ -2,12 +2,11 @@ package db.parkinglot.controller;
 
 import db.parkinglot.dto.ParkingLotReservationResponseDto;
 import db.parkinglot.dto.ParkingLotResponseDto;
+import db.parkinglot.dto.reserveDto.ParkingLotReservationDto;
 import db.parkinglot.entity.ParkingLot;
 import db.parkinglot.service.ParkingLotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -55,9 +54,8 @@ public class ParkingLotController {
 
     @PostMapping("/{parkingLotId}/reservation")
     @ResponseBody
-    public String reservation(@PathVariable Long parkingLotId) {
-
-        ParkingLot parkingLot = parkingLotService.reserveParkingLot(parkingLotId);
+    public String reservation(@PathVariable Long parkingLotId, @RequestBody ParkingLotReservationDto dto) {
+        ParkingLot parkingLot = parkingLotService.reserveParkingLot(parkingLotId, dto);
         if (parkingLot == null) {
             return "bad";
         }
