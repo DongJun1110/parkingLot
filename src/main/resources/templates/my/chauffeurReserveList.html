@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Parking Lots</title>
+    <style>
+
+        body{
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-left: 100px;
+        }
+
+        h1 .search-icon {
+            float: right;
+            margin-left: 50px;
+            line-height: 50px;
+            color: black;
+            cursor: pointer;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 0px;
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+        .navbar .logout-btn {
+            float: right;
+        }
+
+        .search-container {
+            text-align: right;
+            margin-left: 100px;
+        }
+
+        .search-icon {
+            line-height: 50px;
+            float: right;
+            margin-left: 100px;
+            margin-right: 30px;
+            line-height: 50px;
+            color: black;
+            cursor: pointer;
+        }
+
+        /* 검색 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #ccc;
+            padding: 60px;
+            background-color: white;
+            z-index: 1000;
+        }
+    </style>
+
+    <script>
+        function openSearchModal() {
+            var modal = document.getElementById('searchModal');
+            modal.style.display = 'block';
+        }
+
+        function closeSearchModal() {
+            var modal = document.getElementById('searchModal');
+            modal.style.display = 'none';
+        }
+
+        function viewParkingLotDetails(id) {
+            window.location.href = '/parkingLots/' + id;
+        }
+    </script>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="http://localhost:8080">Home</a>
+    <a href="/parkingLots/lists">ParkingLot</a>
+    <a href="/vehicle/registerCar">Register</a>
+    <a href="/MyPageForm">MyPage</a>
+    <a href="/chauffeur/lists">Driver</a>
+    <a href="#" class="logout-btn">Logout</a>
+</div>
+
+<h1 style="text-align: right;">
+    <!-- 검색 아이콘 -->
+    <a href="#" class="search-icon" onclick="openSearchModal()">
+        <img src="../../static/images/search_icon.jpg" width="10" height="10">
+    </a>
+</h1>
+
+<div id="searchModal" class="modal">
+    <span onclick="closeSearchModal()" style="float: right; cursor: pointer;">&times;</span>
+    <h2>Search</h2>
+    <!-- 검색 폼 -->
+    <form action="/parkingLots/search" method="get">
+        <input type="text" name="keyword">
+        <input type="submit" value="Search">
+    </form>
+</div>
+
+
+<h1 style="text-align: center;">Parking Lot List</h1>
+
+<div class="search-container">
+    <!-- 검색 아이콘 -->
+    <a href="#" class="search-icon" onclick="openSearchModal()">
+        <img src="https://cdn-icons-png.flaticon.com/128/54/54481.png" width="30" height="30">
+    </a>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Pick Up Location</th>
+        <th>Destination</th>
+        <th>Pick Up Time</th>
+        <th>Car's number</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>김민수</td>
+        <td>종로 5가</td>
+        <td>아주대학교</td>
+        <td>12:00</td>
+        <td>11가1111</td>
+
+    </tr>
+    <!-- 기존 리스트 내용... -->
+    </tbody>
+</table>
+</body>
+</html>

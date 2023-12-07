@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chauffeurs List</title>
+    <style>
+
+
+        /* 스타일 */
+
+        h1 {
+            text-align: center;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .navbar a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .logout-btn {
+            margin-left: auto;
+        }
+
+
+        /* 테이블 스타일 */
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        /* 예약 버튼 스타일 */
+        /* 예약 버튼 스타일 */
+        .reserve-button {
+            padding: 8px 16px; /* 조절된 패딩 값 */
+            font-size: 14px; /* 조절된 폰트 크기 */
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .reserve-button:hover {
+            background-color: #45a049;
+        }
+
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            text-align: center;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 400px; /* 모달의 최대 너비 조정 */
+            width: 80%; /* 모달의 상대적인 너비 */
+        }
+
+        .modal-content input[type="submit"] {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background-color: #27ae60;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+
+        .modal-content input[type="submit"]:hover {
+            background-color: #219d54;
+        }
+
+
+        .close {
+            color: #333;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+
+    </style>
+
+    <script th:inline="javascript">
+        // 예약 폼 모달을 열 때 해당 chauffeur의 ID 값을 받아와 예약에 필요한 추가 작업 수행 가능
+        function openReservationForm(chauffeurId) {
+            // 여기에 ID 값을 활용하여 예약 폼 모달을 열 때 추가 작업 가능
+            console.log("Reserve button clicked for Chauffeur ID:", chauffeurId);
+
+            // 모달 열기
+            document.getElementById('reservationModal').style.display = 'block';
+
+            // 모달에 ID 전달
+            document.getElementById('chauffeurId').value = chauffeurId;
+        }
+
+        // 예약 폼 모달을 닫는다
+        function closeReservationForm() {
+            document.getElementById('reservationModal').style.display = 'none';
+        }
+    </script>
+</head>
+<body>
+
+<!-- 네비게이션 바 -->
+<div class="navbar">
+    <a href="http://localhost:8080">Home</a>
+    <a href="/parkingLots/lists">ParkingLot</a>
+    <a href="/vehicle/registerCar">Register</a>
+    <a href="/MyPageForm">MyPage</a>
+    <a href="/chauffeur/lists">Driver</a>
+    <a href="#" class="logout-btn">Logout</a>
+</div>
+
+<!-- Chauffeurs 리스트 -->
+<h1>Chauffeurs List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Area</th>
+        <th>License Number</th>
+        <th>Driving Career</th>
+        <th>Reserve</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- th:each를 이용해 chauffeurs 리스트를 순회하며 데이터 표시 -->
+    <tr th:each="chauffeur : ${chauffeurs}">
+        <!-- chauffeur 객체에서 필드 값들을 출력 -->
+        <td th:text="${chauffeur.name}"></td>
+        <td th:text="${chauffeur.area}"></td>
+        <td th:text="${chauffeur.licenseNumber}"></td>
+        <td th:text="${chauffeur.drivingCareer}"></td>
+        <!-- Reserve 버튼 -->
+        <td><button class="reserve-button" th:onclick="'openReservationForm(\'' + ${chauffeur.id} + '\')'">Reserve</button></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 예약을 위한 모달 폼 -->
+<div id="reservationModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeReservationForm()">&times;</span>
+        <h2>Reservation Form</h2>
+        <form action="/MyPageChauffeurReservationForm" method="get">
+            <!-- 숨겨진 input으로 chauffeur ID 전달 -->
+            <input type="hidden" id="chauffeurId" name="chauffeurId">
+
+            <!-- 나머지 입력 폼 -->
+            <label for="carNumber">차량 번호:</label>
+            <input type="text" id="carNumber" name="carNumber"><br><br>
+
+            <label for="pickupLocation">픽업 장소:</label>
+            <input type="text" id="pickupLocation" name="pickupLocation"><br><br>
+
+            <label for="arriveLocation">도착 장소:</label>
+            <input type="text" id="arriveLocation" name="arriveLocation"><br><br>
+
+            <label for="pickupTime">픽업 시간:</label>
+            <input type="text" id="pickupTime" name="pickupTime"><br><br>
+
+
+
+            <input type="submit" value="예약 요청">
+        </form>
+    </div>
+</div>
+
+</body>

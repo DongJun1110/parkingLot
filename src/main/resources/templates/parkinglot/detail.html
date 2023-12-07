@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Parking Lot Details</title>
+    <style>
+        /* 스타일 수정 */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            color: white;
+            text-align: center;
+        }
+        .navbar a {
+            display: inline-block;
+            padding: 14px 20px;
+            text-decoration: none;
+            color: white;
+        }
+        .navbar a.logout-btn {
+            float: right; /* 로그아웃 버튼을 오른쪽으로 이동 */
+        }
+        .navbar a:not(.logout-btn) {
+            float: left; /* 로그아웃 버튼을 제외한 항목들은 왼쪽으로 배치 */
+        }
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        /* 추가된 스타일 */
+        .buttons {
+            text-align: right;
+            margin-top: 20px;
+            margin-right: 50px;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .buttons button.back-btn {
+            background-color: #ccc;
+            color: #333;
+        }
+        /* 이하 기존 스타일 유지 */
+        h1 {
+            font-family: 'Arial', sans-serif;
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 70%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        td {
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+        .important {
+            font-weight: bold;
+            color: #000aa6;
+        }
+
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            text-align: center;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 400px; /* 모달의 최대 너비 조정 */
+            width: 80%; /* 모달의 상대적인 너비 */
+        }
+
+        .buttons .reservation-btn {
+            /* 여기에 버튼의 색상 및 다른 스타일을 추가하세요 */
+            background-color: #5cb85c; /* 버튼 배경색 */
+            border: 1px solid #4cae4c; /* 버튼 테두리 */
+            /* 추가적인 스타일들을 필요에 따라 설정하세요 */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 네비게이션 바 -->
+<div class="navbar">
+    <a href="http://localhost:8080">Home</a>
+    <a href="/parkingLots/lists">ParkingLot</a>
+    <a href="/vehicle/registerCar">Register</a>
+    <a href="/MyPageForm">MyPage</a>
+    <a href="/chauffeur/lists">Driver</a>
+    <a href="#" class="logout-btn">Logout</a>
+</div>
+
+<!-- 주차장 상세 정보 표시 -->
+<h1 th:text="${detailParkingLot.name}"></h1>
+<table>
+    <tbody>
+    <tr>
+        <td class="important">Name</td>
+        <td th:text="${detailParkingLot.name}"></td>
+    </tr>
+
+    <tr>
+        <td class="important">Sort</td>
+        <td th:text="${detailParkingLot.sort}"></td>
+    </tr>
+    <tr>
+        <td class="important">Location</td>
+        <td th:text="${detailParkingLot.location}"></td>
+    </tr>
+    <tr>
+        <td class="important">Total Space</td>
+        <td th:text="${detailParkingLot.totalSpace}"></td>
+    </tr>
+    <tr>
+        <td class="important">Left Space</td>
+        <td th:text="${detailParkingLot.leftSpace}"></td>
+    </tr>
+    <tr>
+        <td class="important">Start Time</td>
+        <td th:text="${detailParkingLot.startTime}"></td>
+    </tr>
+    <tr>
+        <td class="important">End Time</td>
+        <td th:text="${detailParkingLot.endTime}"></td>
+    </tr>
+    <tr>
+        <td class="important">Fee</td>
+        <td th:text="${detailParkingLot.fee}"></td>
+    </tr>
+    <tr>
+        <td class="important">Fee Per Hour</td>
+        <td th:text="${detailParkingLot.feePerHour}"></td>
+    </tr>
+    <tr>
+        <td class="important">Day Fee</td>
+        <td th:text="${detailParkingLot.dayFee}"></td>
+    </tr>
+    <tr>
+        <td class="important">Month Fee</td>
+        <td th:text="${detailParkingLot.monthFee}"></td>
+    </tr>
+    <tr>
+        <td class="important">Significant</td>
+        <td th:text="${detailParkingLot.significant}"></td>
+    </tr>
+    <tr>
+        <td class="important">Company</td>
+        <td th:text="${detailParkingLot.company}"></td>
+    </tr>
+    <tr>
+        <td class="important">Contact Number</td>
+        <td th:text="${detailParkingLot.contactNumber}"></td>
+    </tr>
+
+    </tbody>
+</table>
+
+<!-- 모달 창 -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <!-- 모달 내용 -->
+        <h2>주차장 예약</h2>
+        <form id="reservationForm">
+            <label for="reservationDate">날짜 </label>
+            <input type="date" id="reservationDate" name="reservationDate"><br><br>
+
+            <label for="entryTime">입차시간 </label>
+            <input type="time" id="entryTime" name="entryTime"><br><br>
+
+            <label for="exitTime">출차시간 </label>
+            <input type="time" id="exitTime" name="exitTime"><br><br>
+
+            <button type="button" onclick="submitReservation()">예약하기</button>
+        </form>
+    </div>
+</div>
+
+<div class="buttons">
+    <button class="back-btn" onclick="window.history.back()">뒤로가기</button>
+    <button onclick="openModal()">예약하기</button>
+</div>
+
+<script th:inline="javascript">
+    function openModal() {
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'block';
+    }
+
+    function closeModal() {
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'none';
+    }
+
+    function submitReservation() {
+        var reservationDate = document.getElementById('reservationDate').value;
+        var entryTime = document.getElementById('entryTime').value;
+        var exitTime = document.getElementById('exitTime').value;
+
+        // 서버로 데이터를 보내는 코드 작성 (AJAX 요청 등)
+
+        closeModal(); // 예약 후 모달을 닫습니다.
+    }
+</script>
+
+</body>
+</html>

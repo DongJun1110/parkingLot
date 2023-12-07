@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>입력 폼</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0px;
+        }
+
+        h1{
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .navbar a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .logout-btn {
+            margin-left: auto;
+        }
+
+
+        h1 {
+            color: #333;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="submit"],
+        button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        button {
+            background-color: #ccc;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #999;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <a href="http://localhost:8080">Home</a>
+    <a href="/parkingLots/lists">ParkingLot</a>
+    <a href="/registerParkingLot/registerForm">Register</a>
+    <a href="/MyPageForm">MyPage</a>
+    <a href="/chauffeur/lists">Driver</a>
+    <a href="#" class="logout-btn">Logout</a>
+</div>
+
+<h1>차량 등록</h1>
+<form action="/main" method="get" enctype="application/json">
+    <label for="name">차량 번호</label>
+    <input type="text" id="name" name="name">
+
+    <label for="sort">브랜드명</label>
+    <input type="text" id="sort" name="sort">
+
+    <label for="location">색상</label>
+    <input type="text" id="location" name="location">
+
+    <input type="submit" value="등록하기">
+    <button onclick="goBack()">뒤로가기</button>
+
+    <script>
+        function goBack() {
+            window.location.href = "/main"; // 뒤로가기 버튼 클릭 시 '/main' 페이지로 이동
+        }
+    </script>
+</form>
+</body>
+</html>
