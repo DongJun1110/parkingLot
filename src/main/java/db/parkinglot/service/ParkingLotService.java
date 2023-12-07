@@ -4,10 +4,13 @@ import db.parkinglot.dto.ParkingLotRequestDto;
 import db.parkinglot.dto.ParkingLotReservationResponseDto;
 import db.parkinglot.dto.ParkingLotResponseDto;
 import db.parkinglot.dto.UserInfoDto;
+import db.parkinglot.dto.reserveDto.ParkingLotReservationDto;
 import db.parkinglot.entity.Member;
 import db.parkinglot.entity.ParkingLot;
+import db.parkinglot.entity.reservation.ParkingLotReservation;
 import db.parkinglot.repository.MemberRepository;
 import db.parkinglot.repository.ParkingLotRepository;
+import db.parkinglot.repository.ReservationParkingLotRepository;
 import db.parkinglot.security.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ public class ParkingLotService {
 
     private final ParkingLotRepository parkingLotRepository;
     private final MemberRepository memberRepository;
+    private final ReservationParkingLotRepository reservationParkingLotRepository;
 
     //주차장 등록하기
     @Transactional
@@ -109,7 +113,7 @@ public class ParkingLotService {
     }
 
     @Transactional
-    public ParkingLot reserveParkingLot(Long parkingLotId) {
+    public ParkingLot reserveParkingLot(Long parkingLotId, ParkingLotReservationDto dto) {
 
         Optional<ParkingLot> foundParkingLot = parkingLotRepository.findById(parkingLotId);
         List<ParkingLot> result = new ArrayList<>();
@@ -120,7 +124,6 @@ public class ParkingLotService {
             Optional<Member> foundMember = memberRepository.findByUserId(currentMemberId.getUserId());
             result.add(parkingLot);
 
-
             if(foundMember.isPresent()){
                 Member member = foundMember.get();
                 parkingLot.setMember(member);
@@ -130,6 +133,16 @@ public class ParkingLotService {
 
                 parkingLot.setLeftSpace(parkingLot.getLeftSpace()-1);
                 parkingLotRepository.save(parkingLot);
+
+                ParkingLotReservation pl = ParkingLotReservation.builder()
+                        .date(dto.getDate())
+                        .exitTime(dto.getExitTime())
+                        .enterTime(dto.getEnterTime())
+                        .member(member)
+                        .parkingLot(parkingLot)
+                        .build();
+
+                reservationParkingLotRepository.save(pl);
 
                 return parkingLot;
             }
