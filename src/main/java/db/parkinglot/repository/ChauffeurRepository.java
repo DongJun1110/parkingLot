@@ -1,7 +1,6 @@
 package db.parkinglot.repository;
 
 import db.parkinglot.entity.Chauffeur;
-import db.parkinglot.entity.ParkingLot;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

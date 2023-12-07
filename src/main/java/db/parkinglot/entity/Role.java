@@ -1,8 +1,6 @@
 package db.parkinglot.entity;
 
-
 import lombok.Getter;
-
 @Getter
 public enum Role {
     USER("ROLE_USER"),
