@@ -1,9 +1,14 @@
 package db.parkinglot.controller;
 
 import db.parkinglot.dto.ChauffeurRegisterRequestDto;
+import db.parkinglot.dto.ParkingLotResponseDto;
+import db.parkinglot.dto.reserveDto.ChauffeurReservationRequestDto;
 import db.parkinglot.entity.Chauffeur;
+import db.parkinglot.entity.reservation.ChauffeurReservation;
+import db.parkinglot.repository.ChauffeurRepository;
 import db.parkinglot.service.ChauffeurService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,12 +40,13 @@ public class ChauffeurController {
     //대리 예약
     @PostMapping("/reservation/{chauffeurId}")
     @ResponseBody
-    public Chauffeur reserveChauffeur(@PathVariable Long chauffeurId) {
-        Chauffeur chauffeur = chauffeurService.reserveChauffeur(chauffeurId);
-        if (chauffeur == null) {
-            return null;
+    public HttpStatus reserveChauffeur(@PathVariable Long chauffeurId,
+                                       ChauffeurReservationRequestDto dto) {
+        ChauffeurReservation chauffeurReservation = chauffeurService.reserveChauffeur(chauffeurId, dto);
+        if (chauffeurReservation == null) {
+            return HttpStatus.BAD_REQUEST;
         }
-        return chauffeur;
+        return HttpStatus.OK;
     }
 
     //대리기사 예약 목록
@@ -50,6 +56,13 @@ public class ChauffeurController {
         return chauffeurService.showReservationList();
     }
 
+    //대리 찾기
+    @GetMapping("/search")
+    public String searchChauffeur(@RequestParam String keyword, Model model) {
+        List<Chauffeur> chauffeurs = chauffeurService.searchChauffeur(keyword);
+        model.addAttribute("chauffeurs", chauffeurs);
+        return "parkinglot/searchedList";
+    }
 
     //대리기사 등록하기
     @PostMapping("/registerDriver")
