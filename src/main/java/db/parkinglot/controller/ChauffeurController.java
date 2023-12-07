@@ -8,6 +8,7 @@ import db.parkinglot.entity.reservation.ChauffeurReservation;
 import db.parkinglot.repository.ChauffeurRepository;
 import db.parkinglot.service.ChauffeurService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/chauffeur")
 public class ChauffeurController {
 
@@ -41,8 +43,9 @@ public class ChauffeurController {
     @PostMapping("/reservation/{chauffeurId}")
     @ResponseBody
     public HttpStatus reserveChauffeur(@PathVariable Long chauffeurId,
-                                       ChauffeurReservationRequestDto dto) {
+                                       @RequestBody ChauffeurReservationRequestDto dto) {
         ChauffeurReservation chauffeurReservation = chauffeurService.reserveChauffeur(chauffeurId, dto);
+        log.info("디티오"+chauffeurReservation.toString());
         if (chauffeurReservation == null) {
             return HttpStatus.BAD_REQUEST;
         }
