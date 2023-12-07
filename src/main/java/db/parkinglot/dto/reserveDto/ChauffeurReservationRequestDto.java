@@ -1,7 +1,6 @@
 package db.parkinglot.dto.reserveDto;
 
 import lombok.*;
-
 @Getter
 @Builder
 @AllArgsConstructor
