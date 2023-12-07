@@ -1,4 +1,4 @@
-package db.parkinglot.dto;
+package db.parkinglot.dto.reserveDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 public class ChauffeurReservationRequestDto {
 
     private String carNumber;
+    private String date;
     private String pickupLocation;
     private String pickupTime;
-    private String arriveLocation;
+    private String destination;
 
 }
