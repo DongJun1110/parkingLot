@@ -1,6 +1,5 @@
 package db.parkinglot.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
