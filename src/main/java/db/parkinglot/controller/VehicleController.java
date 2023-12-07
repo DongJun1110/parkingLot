@@ -22,7 +22,7 @@ public class VehicleController {
         return vehicleService.getVehicles();
     }
 
-    @GetMapping("/register")
+    @GetMapping("/registerCar")
     public String getRegisterForm() {
         return "vehicle/register";
     }
