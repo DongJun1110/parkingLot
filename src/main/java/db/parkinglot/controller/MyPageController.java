@@ -10,4 +10,14 @@ public class MyPageController {
     public String getMyPage() {
         return "my/myPage";
     }
+
+    @GetMapping("/MyPageParkingLotReservationForm")
+    public String getParkingLotReservationForm() {
+        return "my/parkingLotReserveList";
+    }
+
+    @GetMapping("/MyPageChauffeurReservationForm")
+    public String getChauffeurReservationForm() {
+        return "my/chauffeurReserveList";
+    }
 }
