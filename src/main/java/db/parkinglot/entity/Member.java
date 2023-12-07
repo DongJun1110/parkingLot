@@ -1,5 +1,7 @@
 package db.parkinglot.entity;
 
+import db.parkinglot.entity.reservation.ChauffeurReservation;
+import db.parkinglot.entity.reservation.ParkingLotReservation;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -50,8 +52,16 @@ public class Member implements UserDetails {
     private List<ParkingLot> parkingLot = new ArrayList<>();
 
     @OneToMany
-    @JoinColumn(name = "chauffeurId")
+    @JoinColumn
     private List<Chauffeur> chauffeurs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = jakarta.persistence.CascadeType.ALL)
+    private List<ParkingLotReservation> parkingLotReservation
+            = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = jakarta.persistence.CascadeType.ALL)
+    private List<ChauffeurReservation> chauffeurReservations
+            = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
