@@ -1,11 +1,9 @@
 package db.parkinglot.service;
 
 import db.parkinglot.dto.ChauffeurRegisterRequestDto;
-import db.parkinglot.dto.ParkingLotResponseDto;
 import db.parkinglot.dto.reserveDto.ChauffeurReservationRequestDto;
 import db.parkinglot.entity.Chauffeur;
 import db.parkinglot.entity.Member;
-import db.parkinglot.entity.ParkingLot;
 import db.parkinglot.entity.reservation.ChauffeurReservation;
 import db.parkinglot.repository.ChauffeurRepository;
 import db.parkinglot.repository.MemberRepository;
@@ -14,7 +12,6 @@ import db.parkinglot.security.SecurityUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.flyway.FlywayDataSource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -67,14 +64,17 @@ public class ChauffeurService {
     }
 
     @Transactional
-    public List<Chauffeur> showReservationList() {
+    public List<ChauffeurReservation> showReservationList() {
         String userId = SecurityUtil.getCurrentMemberId().getUserId();
         Optional<Member> foundMember = memberRepository.findByUserId(userId);
 
         if (foundMember.isPresent()) {
             Member member = foundMember.get();
-            List<Chauffeur> chauffeurs = member.getChauffeurs();
-            return chauffeurs;
+            Long memberId = member.getId();
+            List<ChauffeurReservation> result =
+                    reservationChauffeurRepository.findChauffeurReservationByMember(member);
+
+            return result;
         }
         return null;
     }
